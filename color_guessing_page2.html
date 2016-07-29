@@ -1,0 +1,63 @@
+
+<!doctype html>
+<html>
+	<head>
+		<title>Color guessing game</title>
+		<body onload="do_game()">
+		<script>
+		//define global variables
+		var color_think;
+		var color_target;
+		var target_index;
+		var think_index;
+		var finished=false;
+		var guess=0;
+		var colors=["blue", "cyan", "gold", "gray", "green", "magenta", "orange", "red", "white", "yellow"];
+
+		function do_game() {
+			//generate a random number
+			colors.sort();
+			var random_num = Math.random()*(colors.length-1); //the resulting range is [0,1)*10, dump the decimal place
+			var target_index_integer = Math.floor(random_num);
+			target_index = target_index_integer;
+			color_target=colors[target_index_integer];
+
+			//Randomly select one of those colors in the array as the target
+			//color_target = colors[target_index_integer];
+			//alert("target color is "+color_target);
+
+			//create a loop and see if the game should stop
+			while (!finished) {
+				//generate an input color
+				color_think = prompt("I am thinking of one of these colors: \n\nblue, cyan, gold, gray, green, magenta, orange, red, white, yellow\n\nWhat color am I thinking of?");
+				think_index = colors.indexOf(color_think);
+				guess+=1;
+				finished=check_guess();
+			}
+		}
+
+		function check_guess(color_think) {
+			//compare input color and target color, not a color in the array
+			if (think_index<0) { 
+				alert("Sorry, I don't recognize your color. \nPlease try again.");
+				return false;
+			}
+			//alphabetically higher
+			if (think_index > target_index) { 
+				alert("Sorry, your guess is not correct! \nHint: your color is alphabetically higher than mine. \nPlease try again.");
+				return false;
+			}
+			//alphabetically lower 
+			if (think_index < target_index) { 
+				alert("Sorry, your guess is not correct! \nHint: your color is alphabetically lower than mine. \nPlease try again.");
+				return false;
+			}
+			myBody=document.getElementsByTagName("body")[0];
+			myBody.style.background=color_target;
+			alert("Congratulations! You have guessed the color! \nIt took you " + guess + " guesses to finish the game!\nYou can see " + color_target + " in the background.");
+			return true;
+		}
+		</script>
+		</body>
+	</head>
+</html>
